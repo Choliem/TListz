@@ -13,6 +13,12 @@
     <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
         <div class="mx-auto max-w-screen-md sm:text-center">
             <form action="/posts">
+                <?php if(request('category')): ?>
+                    <input type="hidden" name="category" value="<?php echo e(request('category')); ?>">
+                <?php endif; ?>
+                <?php if(request('author')): ?>
+                    <input type="hidden" name="author" value="<?php echo e(request('author')); ?>">
+                <?php endif; ?>
                 <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                     <div class="relative w-full">
                         <label for="search"
@@ -28,7 +34,8 @@
                         </div>
                         <input
                             class="block p-3 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:rounded-none sm:rounded-l-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Search for Tier List" type="search" id="search" name="search">
+                            placeholder="Search for Tier List" type="search" id="search" name="search"
+                            autocomplete="off">
                     </div>
                     <div>
                         <button type="submit"
@@ -42,13 +49,13 @@
     
     <div class="py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <?php $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__empty_1 = true; $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 
 
                 <article
                     class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-5 text-gray-500">
-                        <a href="/categories/<?php echo e($post->category->slug); ?>">
+                        <a href="/posts?category=<?php echo e($post->category->slug); ?>">
                             <span
                                 class="bg-<?php echo e($post->category->color); ?>-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                                 
@@ -64,7 +71,7 @@
                     </a>
                     <p class="mb-5 font-light text-gray-500 dark:text-gray-400"><?php echo e(Str::limit($post['body'], 150)); ?></p>
                     <div class="flex justify-between items-center">
-                        <a href="/authors/<?php echo e($post->author->username); ?>">
+                        <a href="/posts?author=<?php echo e($post->author->username); ?>">
                             <div class="flex items-center space-x-3">
                                 <img class="w-7 h-7 rounded-full"
                                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
@@ -87,7 +94,12 @@
                         </a>
                     </div>
                 </article>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div>
+                    <p class="font-semibold text-xl my-4">Article Not Found!</p>
+                    <a href="/posts" class="block text-blue-600 hover:underline">&laquo; Back To All Posts</a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     

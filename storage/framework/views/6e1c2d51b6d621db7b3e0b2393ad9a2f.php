@@ -32,11 +32,11 @@ URL: https://flowbite.com/docs/components/typography/
                                 src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                 alt="<?php echo e($post->author->name); ?>">
                             <div>
-                                <a href="/authors/<?php echo e($post->author->username); ?>" rel="author"
+                                <a href="/posts?author=<?php echo e($post->author->username); ?>" rel="author"
                                     class="text-xl font-bold text-gray-900 dark:text-white"><?php echo e($post->author->name); ?></a>
                                 <p class="text-base text-gray-500 dark:text-gray-400 mb-1">
                                     <?php echo e($post->created_at->diffForHumans()); ?></time></p>
-                                <a href="/categories/<?php echo e($post->category->slug); ?>">
+                                <a href="/posts?category=<?php echo e($post->category->slug); ?>">
                                     <span
                                         class="bg-<?php echo e($post->category->color); ?>-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                                         
