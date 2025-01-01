@@ -46,8 +46,11 @@
         </div>
     </div>
 
+    <?php echo e($posts->links()); ?>
+
+
     
-    <div class="py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
+    <div class="my-4 py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <?php $__empty_1 = true; $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 
@@ -69,7 +72,9 @@
                         <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             <?php echo e($post['title']); ?></h2>
                     </a>
-                    <p class="mb-5 font-light text-gray-500 dark:text-gray-400"><?php echo e(Str::limit($post['body'], 150)); ?></p>
+                    <p class="mb-5 font-light text-gray-500 dark:text-gray-400"><?php echo e(Str::limit($post['body'], 150)); ?>
+
+                    </p>
                     <div class="flex justify-between items-center">
                         <a href="/posts?author=<?php echo e($post->author->username); ?>">
                             <div class="flex items-center space-x-3">
@@ -102,6 +107,10 @@
             <?php endif; ?>
         </div>
     </div>
+
+
+    <?php echo e($posts->links()); ?>
+
     
 
  <?php echo $__env->renderComponent(); ?>
