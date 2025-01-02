@@ -56,6 +56,190 @@ URL: https://flowbite.com/docs/components/typography/
                 </header>
                 <p><?php echo e($post->body); ?></p>
 
+
+
+
+
+                
+                <section>
+                    <style>
+                        .tier-list {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+                        }
+
+                        .tier-row {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            margin: 10px 0;
+                            padding: 15px;
+                            border-radius: 12px;
+                            background-color: #a2a0a5;
+                            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .tier-row.hovered {
+                            background-color: rgba(150, 150, 150, 0.3);
+                            transition: background-color 0.3s;
+                        }
+
+                        .tier-label {
+                            width: 100px;
+                            text-align: center;
+                            padding: 10px;
+                            border-radius: 5px;
+                            background-color: #f7f7f7;
+                        }
+
+                        .tier-items {
+                            display: flex;
+                            gap: 10px;
+                            flex-wrap: wrap;
+                        }
+
+                        .tier-item {
+                            padding: 10px;
+                            background-color: #e5e7eb;
+                            border-radius: 5px;
+                            cursor: grab;
+                        }
+
+                        .tier-item:active {
+                            cursor: grabbing;
+                        }
+
+                        .tier-item.hidden {
+                            display: none;
+                        }
+                    </style>
+
+                    <div class="container mx-auto">
+                        <h1 class="text-3xl font-bold mb-5">Tier List Maker</h1>
+
+                        <!-- Tier List Container -->
+                        <div class="tier-list">
+                            <!-- Tier Row Example -->
+                            <div class="tier-row">
+                                <div class="tier-label">S Tier</div>
+                                <div class="tier-items" id="s-tier">
+                                    <!-- Items will be dragged here -->
+                                </div>
+                            </div>
+                            <div class="tier-row">
+                                <div class="tier-label">A Tier</div>
+                                <div class="tier-items" id="a-tier">
+                                    <!-- Items will be dragged here -->
+                                </div>
+                            </div>
+                            <div class="tier-row">
+                                <div class="tier-label">B Tier</div>
+                                <div class="tier-items" id="b-tier">
+                                    <!-- Items will be dragged here -->
+                                </div>
+                            </div>
+                            <div class="tier-row">
+                                <div class="tier-label">C Tier</div>
+                                <div class="tier-items" id="c-tier">
+                                    <!-- Items will be dragged here -->
+                                </div>
+                            </div>
+                            <div class="tier-row">
+                                <div class="tier-label">D Tier</div>
+                                <div class="tier-items" id="d-tier">
+                                    <!-- Items will be dragged here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Items to Drag -->
+                        <div class="mt-10">
+                            <h2 class="text-2xl font-bold mb-5">Items</h2>
+                            <div class="flex gap-3 flex-wrap" id="items-container">
+                                <div class="tier-item" id="item-1" draggable="true">Item 1</div>
+                                <div class="tier-item" id="item-2" draggable="true">Item 2</div>
+                                <div class="tier-item" id="item-3" draggable="true">Item 3</div>
+                                <div class="tier-item" id="item-4" draggable="true">Item 4</div>
+                                <div class="tier-item" id="item-5" draggable="true">Item 5</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const items = document.querySelectorAll('.tier-item');
+                            const rows = document.querySelectorAll('.tier-row');
+
+                            let draggedItem = null; // Track the dragged item
+
+                            items.forEach(item => {
+                                // Start dragging
+                                item.addEventListener('dragstart', (e) => {
+                                    draggedItem = item;
+                                    setTimeout(() => item.classList.add('hidden'),
+                                        0); // Hide the item while dragging
+                                });
+
+                                // End dragging
+                                item.addEventListener('dragend', () => {
+                                    draggedItem = null;
+                                    items.forEach(item => item.classList.remove('hidden'));
+                                });
+                            });
+
+                            rows.forEach(row => {
+                                // Dragging over a row
+                                row.addEventListener('dragover', (e) => {
+                                    e.preventDefault(); // Allow dropping
+                                    row.classList.add('hovered');
+                                });
+
+                                // Leaving the row area
+                                row.addEventListener('dragleave', () => {
+                                    row.classList.remove('hovered');
+                                });
+
+                                // Dropping the item
+                                row.addEventListener('drop', (e) => {
+                                    e.preventDefault();
+                                    row.classList.remove('hovered');
+
+                                    if (draggedItem) {
+                                        // Insert the item after the tier-label
+                                        const label = row.querySelector('.tier-label');
+                                        row.insertBefore(draggedItem, label
+                                            .nextSibling); // Insert item next to the label
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+
+
+                </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 
                 
                 
