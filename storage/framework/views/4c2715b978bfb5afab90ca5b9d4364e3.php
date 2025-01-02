@@ -1,25 +1,45 @@
-<?php $__env->startSection('content'); ?>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header"><?php echo e(__('Dashboard')); ?></div>
+<?php if (isset($component)) { $__componentOriginal1f9e5f64f242295036c059d9dc1c375c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal1f9e5f64f242295036c059d9dc1c375c = $attributes; } ?>
+<?php $component = App\View\Components\Layout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\Layout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('title', null, []); ?> <?php echo e($title); ?> <?php $__env->endSlot(); ?>
+    <h3 class="text-xl">Ini adalah halaman Home Page</h3>
 
-                <div class="card-body">
-                    <?php if(session('status')): ?>
-                        <div class="alert alert-success" role="alert">
-                            <?php echo e(session('status')); ?>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header"><?php echo e(__('Dashboard')); ?></div>
 
-                        </div>
-                    <?php endif; ?>
+                    <div class="card-body">
+                        <?php if(session('status')): ?>
+                            <div class="alert alert-success" role="alert">
+                                <?php echo e(session('status')); ?>
 
-                    <?php echo e(__('You are logged in!')); ?>
+                            </div>
+                        <?php endif; ?>
 
+                        <?php echo e(__('You are logged in!')); ?>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\PROGRAMMING\Laragon\laragon\www\laravel11-herd-2ndtest\resources\views/home.blade.php ENDPATH**/ ?>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal1f9e5f64f242295036c059d9dc1c375c)): ?>
+<?php $attributes = $__attributesOriginal1f9e5f64f242295036c059d9dc1c375c; ?>
+<?php unset($__attributesOriginal1f9e5f64f242295036c059d9dc1c375c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1f9e5f64f242295036c059d9dc1c375c)): ?>
+<?php $component = $__componentOriginal1f9e5f64f242295036c059d9dc1c375c; ?>
+<?php unset($__componentOriginal1f9e5f64f242295036c059d9dc1c375c); ?>
+<?php endif; ?>
+<?php /**PATH D:\PROGRAMMING\Laragon\laragon\www\laravel11-herd-2ndtest\resources\views/home.blade.php ENDPATH**/ ?>
