@@ -9,7 +9,7 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.vue",
         "./node_modules/flowbite/**/*.js",
-        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php"
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     ],
     theme: {
         extend: {
