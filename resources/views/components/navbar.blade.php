@@ -3,7 +3,7 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
                 <div class="shrink-0">
-                    <img class="size-8" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                    <img class="size-8" src="https://cdn.discordapp.com/attachments/1272806920884981812/1319065761066651688/PyramidLogozzznobg.png?ex=6777b8f8&is=67766778&hm=28c4bda1711758e00add48547ef200085a9fb629a4580dccf993b723bc9d2aa0&"
                         alt="Your Company">
                 </div>
                 <div class="hidden md:block">
@@ -39,7 +39,7 @@
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
                                     <img class="size-8 rounded-full"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                        src="https://cdn.discordapp.com/attachments/1272806920884981812/1324335301275160617/User-Icon.jpg?ex=6777c6dc&is=6776755c&hm=ea1d405f5ab30a642b7ac5a7b56ec7c9c1d4803127065d413e9e682e64e78623&"
                                         alt="">
                                 </button>
                             </div>
@@ -58,7 +58,7 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                                
+
                                 {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                     tabindex="-1" id="user-menu-item-1">Settings</a>
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
