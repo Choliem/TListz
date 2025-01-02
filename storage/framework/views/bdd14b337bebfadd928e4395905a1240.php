@@ -8,7 +8,10 @@
 <?php $attributes = $attributes->except(\App\View\Components\Layout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-     <?php $__env->slot('title', null, []); ?> <?php echo e($title); ?> <?php $__env->endSlot(); ?>
+     <?php $__env->slot('title', null, []); ?> 
+        <?php echo e($title ?? 'Default Title'); ?>
+
+     <?php $__env->endSlot(); ?>
 
     <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
         <div class="mx-auto max-w-screen-md sm:text-center">

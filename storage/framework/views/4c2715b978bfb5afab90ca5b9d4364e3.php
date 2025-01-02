@@ -8,7 +8,9 @@
 <?php $attributes = $attributes->except(\App\View\Components\Layout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-     <?php $__env->slot('title', null, []); ?> <?php echo e($title); ?> <?php $__env->endSlot(); ?>
+     <?php $__env->slot('title', null, []); ?> 
+        Home Page
+     <?php $__env->endSlot(); ?>
     <h3 class="text-xl">Ini adalah halaman Home Page</h3>
 
     <div class="container">
