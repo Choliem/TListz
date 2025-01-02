@@ -49,12 +49,9 @@ URL: https://flowbite.com/docs/components/typography/
                     </address>
 
                     
-                    <h1
-                        class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
-                        <?php echo e($post->title); ?>
-
+                    
                 </header>
-                <p><?php echo e($post->body); ?></p>
+                
 
 
 
@@ -113,10 +110,17 @@ URL: https://flowbite.com/docs/components/typography/
                         .tier-item.hidden {
                             display: none;
                         }
+
+                        #items-container {
+                            background-color: #ffffff;
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 1px dashed #000000;
+                        }
                     </style>
 
                     <div class="container mx-auto">
-                        <h1 class="text-3xl font-bold mb-5">Tier List Maker</h1>
+                        <h1 class="text-3xl font-bold mb-5"><?php echo e($post->title); ?></h1>
 
                         <!-- Tier List Container -->
                         <div class="tier-list">
@@ -162,6 +166,16 @@ URL: https://flowbite.com/docs/components/typography/
                                 <div class="tier-item" id="item-3" draggable="true">Item 3</div>
                                 <div class="tier-item" id="item-4" draggable="true">Item 4</div>
                                 <div class="tier-item" id="item-5" draggable="true">Item 5</div>
+                                <div class="tier-item" id="item-6" draggable="true">Item 6</div>
+                                <div class="tier-item" id="item-7" draggable="true">Item 7</div>
+                                <div class="tier-item" id="item-8" draggable="true">Item 8</div>
+                                <div class="tier-item" id="item-9" draggable="true">Item 9</div>
+                                <div class="tier-item" id="item-10" draggable="true">Item 10</div>
+                                <div class="tier-item" id="item-11" draggable="true">Item 11</div>
+                                <div class="tier-item" id="item-12" draggable="true">Item 12</div>
+                                <div class="tier-item" id="item-13" draggable="true">Item 13</div>
+                                <div class="tier-item" id="item-14" draggable="true">Item 14</div>
+                                <div class="tier-item" id="item-15" draggable="true">Item 15</div>
                             </div>
 
                         </div>
@@ -171,37 +185,35 @@ URL: https://flowbite.com/docs/components/typography/
                         document.addEventListener('DOMContentLoaded', () => {
                             const items = document.querySelectorAll('.tier-item');
                             const rows = document.querySelectorAll('.tier-row');
+                            const itemsContainer = document.getElementById('items-container');
 
                             let draggedItem = null; // Track the dragged item
 
+                            // Allow dragging items
                             items.forEach(item => {
-                                // Start dragging
                                 item.addEventListener('dragstart', (e) => {
                                     draggedItem = item;
                                     setTimeout(() => item.classList.add('hidden'),
                                         0); // Hide the item while dragging
                                 });
 
-                                // End dragging
                                 item.addEventListener('dragend', () => {
                                     draggedItem = null;
                                     items.forEach(item => item.classList.remove('hidden'));
                                 });
                             });
 
+                            // Allow rows to accept items
                             rows.forEach(row => {
-                                // Dragging over a row
                                 row.addEventListener('dragover', (e) => {
                                     e.preventDefault(); // Allow dropping
                                     row.classList.add('hovered');
                                 });
 
-                                // Leaving the row area
                                 row.addEventListener('dragleave', () => {
                                     row.classList.remove('hovered');
                                 });
 
-                                // Dropping the item
                                 row.addEventListener('drop', (e) => {
                                     e.preventDefault();
                                     row.classList.remove('hovered');
@@ -209,14 +221,31 @@ URL: https://flowbite.com/docs/components/typography/
                                     if (draggedItem) {
                                         // Insert the item after the tier-label
                                         const label = row.querySelector('.tier-label');
-                                        row.insertBefore(draggedItem, label
-                                            .nextSibling); // Insert item next to the label
+                                        row.insertBefore(draggedItem, label.nextSibling);
                                     }
                                 });
                             });
+
+                            // Allow items to be dragged back to the items container
+                            itemsContainer.addEventListener('dragover', (e) => {
+                                e.preventDefault(); // Allow dropping in the items container
+                            });
+
+                            itemsContainer.addEventListener('drop', (e) => {
+                                e.preventDefault();
+                                if (draggedItem) {
+                                    itemsContainer.appendChild(draggedItem); // Move the item back to the items container
+                                }
+                            });
+
+                            // This ensures that the items are draggable in both the container and tier rows
+                            itemsContainer.addEventListener('dragenter', (e) => {
+                                if (draggedItem) {
+                                    e.preventDefault(); // Ensure we allow dragging even when the container is empty
+                                }
+                            });
                         });
                     </script>
-
 
                 </section>
 
