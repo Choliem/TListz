@@ -61,3 +61,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/post/add', [PostController::class, 'add'])->name('post.add');
+Route::post('/post/store', [PostController::class, 'store'])->name('post.store')->middleware('auth');

@@ -42,7 +42,7 @@
             <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
                 @auth
                     <div class="flex justify-center mb-4">
-                        <a href="/posts/create"
+                        <a href="/post/add"
                             class="flex items-center gap-2 py-2 px-4 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 sm:gap-3 sm:px-6 sm:text-base">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
