@@ -13,6 +13,7 @@
                     <input type="hidden" name="author" value="{{ request('author') }}">
                 @endif
                 <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
+
                     <div class="relative w-full">
                         <label for="search"
                             class="hidden mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Search</label>
@@ -36,44 +37,36 @@
                     </div>
                 </div>
             </form>
+
+            {{-- Tombol Add New Post --}}
+            <div class="py-4 px-4 mx-auto max-w-screen-xl lg:px-6">
+                @auth
+                    <div class="flex justify-center mb-4">
+                        <a href="/posts/create"
+                            class="flex items-center gap-2 py-2 px-4 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 sm:gap-3 sm:px-6 sm:text-base">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span class="hidden sm:inline">Add New Post</span>
+                        </a>
+                    </div>
+                @endauth
+            </div>
+
         </div>
     </div>
 
     {{ $posts->links() }}
-
-    {{-- <section class="bg-white dark:bg-gray-900"> --}}
     <div class="my-4 py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
-                {{-- <article class="py-8 max-w-screen-md border-b border-gray-300">
-                        <a href="/posts/{{ $post['slug'] }}" class="hover:underline">
-                            <h2 class="mb-1 text-3xl tracking-tight font-bold text-gray-900">{{ $post['title'] }}</h2>
-                        </a>
-                        <div>
-                            By
-                            <a href="/authors/{{ $post->author->username }}"
-                                class="hover:underline text-base text-gray-500">{{ $post->author->name }}</a>
-                            in
-                            <a href="/categories/{{ $post->category->slug }}"
-                                class="hover:underline text-base text-gray-500">{{ $post->category->name }}</a> |
-                            {{ $post->created_at->diffForHumans() }}
-                        </div>
-                        <p class="my-4 font-light">{{ Str::limit($post['body'], 150) }}</p>
-                        <a href="/posts/{{ $post['slug'] }}" class="font-medium text-blue-500 hover:underline">Read More &raquo;</a>
-                    </article> --}}
-
                 <article
                     class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-5 text-gray-500">
                         <a href="/posts?category={{ $post->category->slug }}">
                             <span
                                 class="bg-{{ $post->category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
-                                {{-- <svg class="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
-                                </path>
-                            </svg> --}}
                                 {{ $post->category->name }}
                             </span>
                         </a>
