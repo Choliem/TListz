@@ -5,6 +5,8 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+
 
 
 Route::get('/welcome', function () {
@@ -42,6 +44,7 @@ Route::get('/contact', function () {
     return view('contact', ['title' => 'Contact Us']);
 });
 
-
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/post', [PostController::class,'show'])->name('post.show');

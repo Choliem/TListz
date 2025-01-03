@@ -258,7 +258,22 @@ URL: https://flowbite.com/docs/components/typography/
 
                 </section>
 
+                <section>
+                    <div class="text-center mt-4 container">
 
+                        <table class="table">
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>NIS</th>
+                                <th>Alamat</th>
+                                <th>Number</th>
+                                <th>Gender</th>
+                                <th>Birthdate</th>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
 
 
 

@@ -8,7 +8,10 @@
 <?php $attributes = $attributes->except(\App\View\Components\Layout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-     <?php $__env->slot('title', null, []); ?> <?php echo e($title); ?> <?php $__env->endSlot(); ?>
+     <?php $__env->slot('title', null, []); ?> 
+        <?php echo e($title ?? 'Default Title'); ?>
+
+     <?php $__env->endSlot(); ?>
 
     
 
@@ -249,7 +252,22 @@ URL: https://flowbite.com/docs/components/typography/
 
                 </section>
 
+                <section>
+                    <div class="text-center mt-4 container">
 
+                        <table class="table">
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>NIS</th>
+                                <th>Alamat</th>
+                                <th>Number</th>
+                                <th>Gender</th>
+                                <th>Birthdate</th>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
 
 
 
