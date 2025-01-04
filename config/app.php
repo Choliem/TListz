@@ -120,7 +120,7 @@ return [
 
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        'submit' => env('APP_MAINTENANCE_submit', 'database'),
     ],
 
 ];

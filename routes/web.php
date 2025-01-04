@@ -42,14 +42,18 @@ Route::get('/categories/{category:slug}', function (Category $category) {
 //     return view('about', ['title' => 'About Us'], ['nama' => 'Choyim']);
 // });
 
+// Route::get('/my-page', function () {
+//     if (Auth::check()) {
+//         $user = Auth::user();
+//         $username = $user->username;
+//         echo "Username pengguna yang sedang login adalah: " . $username;
+//     } else {
+//         echo "Tidak ada pengguna yang sedang login.";
+//     }
+// })->middleware('auth');
+
 Route::get('/my-page', function () {
-    if (Auth::check()) {
-        $user = Auth::user();
-        $username = $user->username;
-        echo "Username pengguna yang sedang login adalah: " . $username;
-    } else {
-        echo "Tidak ada pengguna yang sedang login.";
-    }
+    return view('mypage', ['title' => 'My Page']);
 })->middleware('auth');
 
 
@@ -61,4 +65,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/post/add', [PostController::class, 'add'])->name('post.add');
-Route::post('/post/store', [PostController::class, 'store'])->name('post.store')->middleware('auth');
+Route::post('/post/submit', [PostController::class, 'submit'])->name('post.submit')->middleware('auth');
+
+Route::get('/post/edit/{slug}', [PostController::class, 'edit'])->name('post.edit');
+Route::put('/post/update/{slug}', [PostController::class, 'update'])->name('post.update');
+Route::delete('/post/delete/{slug}', [PostController::class, 'delete'])->name('post.delete');
