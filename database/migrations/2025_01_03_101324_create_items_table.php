@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('tier_id')->constrained(
                 table: 'tiers',
-                indexName:'items_tier_id'
+                indexName: 'items_tier_id'
             );
             $table->string('name');
             $table->string('url'); // Path or URL to the image

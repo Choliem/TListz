@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Tier extends Model
 {
     use HasFactory;
-
     protected $fillable = ['name', 'rank'];
     protected $with = 'post';
     public function post(): BelongsTo

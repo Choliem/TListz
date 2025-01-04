@@ -17,10 +17,13 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+    public function tiers(): HasMany
+    {
+        return $this->hasMany(Tier::class);
     }
 
     public function scopeFilter(Builder $query, array $filters): void
@@ -42,10 +45,5 @@ class Post extends Model
             fn($query, $author) =>
             $query->whereHas('author', fn($query) => $query->where('username', $author))
         );
-    }
-
-    public function tiers(): HasMany
-    {
-        return $this->hasMany(Tier::class);
     }
 }
