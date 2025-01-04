@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TierController;
 
 
 
@@ -24,8 +25,10 @@ Route::get('/posts', function () {
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
+    $post->load(['tiers.items']);
     return view('post.show', ['title' => 'Single Post', 'post' => $post]);
 });
+
 
 Route::get('/authors/{user:username}', function (User $user) {
     // $posts = $user->posts->load('category', 'author');
@@ -37,20 +40,6 @@ Route::get('/categories/{category:slug}', function (Category $category) {
     // $posts = $category->posts->load('category', 'author');
     return view('posts', ['title' => 'Articles in: ' . $category->name, 'posts' => $category->posts]);
 });
-
-// Route::get('/about', function () {
-//     return view('about', ['title' => 'About Us'], ['nama' => 'Choyim']);
-// });
-
-// Route::get('/my-page', function () {
-//     if (Auth::check()) {
-//         $user = Auth::user();
-//         $username = $user->username;
-//         echo "Username pengguna yang sedang login adalah: " . $username;
-//     } else {
-//         echo "Tidak ada pengguna yang sedang login.";
-//     }
-// })->middleware('auth');
 
 Route::get('/my-page', function () {
     return view('mypage', ['title' => 'My Page']);
@@ -70,3 +59,5 @@ Route::post('/post/submit', [PostController::class, 'submit'])->name('post.submi
 Route::get('/post/edit/{slug}', [PostController::class, 'edit'])->name('post.edit');
 Route::put('/post/update/{slug}', [PostController::class, 'update'])->name('post.update');
 Route::delete('/post/delete/{slug}', [PostController::class, 'delete'])->name('post.delete');
+
+Route::post('/tiers', [TierController::class, 'store']);

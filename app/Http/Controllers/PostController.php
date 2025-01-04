@@ -11,10 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
 
-    function show()
+    public function show($slug)
     {
-        return view("post.show");
+        // Eager load tiers and items
+        $post = Post::with(['tiers.items'])->where('slug', $slug)->firstOrFail();
+
+        return view('post.show', compact('post'));
     }
+
 
     function add()
     {
@@ -24,7 +28,9 @@ class PostController extends Controller
 
     public function edit($slug)
     {
+
         $post = Post::where('slug', $slug)->firstOrFail();
+        $post->load(['tiers.items']);
         $categories = Category::all();
         return view('post.edit', compact('post', 'categories'), ['title' => 'Edit Post']);
     }
