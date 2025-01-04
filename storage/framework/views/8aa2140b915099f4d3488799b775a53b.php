@@ -49,14 +49,14 @@
 <?php endif; ?>
                         <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => '/about','active' => request()->is('about')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => '/my-page','active' => request()->is('mypage')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/about','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->is('about'))]); ?>About <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => '/my-page','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->is('mypage'))]); ?>My Page <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
 <?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
@@ -147,7 +147,7 @@
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
                                     <img class="size-8 rounded-full"
-                                        src="https://cdn.discordapp.com/attachments/1272806920884981812/1324335301275160617/User-Icon.jpg?ex=6777c6dc&is=6776755c&hm=ea1d405f5ab30a642b7ac5a7b56ec7c9c1d4803127065d413e9e682e64e78623&"
+                                        src="https://cdn.discordapp.com/attachments/1272806920884981812/1319073919843438602/deafultprofile.jpg?ex=6779bad1&is=67786951&hm=0b7fc5f0598da3e72c09c9124870640fcb1e01979fda3a297d57655c88ad5ce6&"
                                         alt="">
                                 </button>
                             </div>
@@ -245,14 +245,14 @@
 <?php endif; ?>
             <?php if (isset($component)) { $__componentOriginalc295f12dca9d42f28a259237a5724830 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc295f12dca9d42f28a259237a5724830 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => '/about','active' => request()->is('about')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-link','data' => ['href' => '/my-page','active' => request()->is('mypage')]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('nav-link'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/about','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->is('about'))]); ?>About <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => '/my-page','active' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->is('mypage'))]); ?>My Page <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc295f12dca9d42f28a259237a5724830)): ?>
 <?php $attributes = $__attributesOriginalc295f12dca9d42f28a259237a5724830; ?>
