@@ -26,6 +26,12 @@ class Post extends Model
         return $this->hasMany(Tier::class);
     }
 
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+
     public function scopeFilter(Builder $query, array $filters): void
     {
         $query->when(

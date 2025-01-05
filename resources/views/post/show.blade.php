@@ -89,8 +89,6 @@
                         @endauth
                     </div>
 
-
-
                     <address class="flex items-center my-6 not-italic">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                             <img class="mr-4 w-16 h-16 rounded-full"
@@ -112,217 +110,84 @@
                     </address>
                 </header>
 
-                {{-- Tier-List --}}
+
                 <section>
-                    <style>
-                        .tier-list {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 10px;
-                        }
-
-                        .tier-row {
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                            margin: 10px 0;
-                            padding: 15px;
-                            border-radius: 12px;
-                            background-color: #a2a0a5;
-                            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-                        }
-
-                        .tier-row.hovered {
-                            background-color: rgba(150, 150, 150, 0.3);
-                            transition: background-color 0.3s;
-                        }
-
-                        .tier-label {
-                            width: 100px;
-                            text-align: center;
-                            padding: 10px;
-                            border-radius: 5px;
-                            background-color: #f7f7f7;
-                        }
-
-                        .tier-items {
-                            display: flex;
-                            gap: 10px;
-                            flex-wrap: wrap;
-                        }
-
-                        .tier-item {
-                            padding: 10px;
-                            background-color: #e5e7eb;
-                            border-radius: 5px;
-                            cursor: grab;
-                        }
-
-                        .tier-item:active {
-                            cursor: grabbing;
-                        }
-
-                        .tier-item.hidden {
-                            display: none;
-                        }
-
-                        #items-container {
-                            background-color: #ffffff;
-                            padding: 15px;
-                            border-radius: 10px;
-                            border: 1px dashed #000000;
-                        }
-                    </style>
-
                     <div class="container mx-auto">
-
                         {{-- Judul --}}
                         <h1 class="text-3xl font-bold mb-5">{{ $post->title }}</h1>
-
                         {{-- Text - Body --}}
                         <p>{{ $post->body }}</p>
 
                         <!-- Tier List Container -->
-                        <div class="tier-list">
-                            <!-- Tier Row Example -->
-                            <div class="tier-row">
-                                <div class="tier-label">S Tier</div>
-                                <div class="tier-items" id="s-tier">
-                                    <!-- Items will be dragged here -->
+                        <div id="tier-list" class="tier-list">
+                            @foreach ($post->tiers as $tier)
+                                <div class="tier-row">
+                                    <div class="tier-label">{{ $tier->name }}</div>
+                                    <div class="tier-items" id="{{ Str::slug($tier->name) }}-tier">
+                                        @foreach ($tier->items as $item)
+                                            <div class="tier-item" id="item-{{ $item->id }}">{{ $item->name }}
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tier-row">
-                                <div class="tier-label">A Tier</div>
-                                <div class="tier-items" id="a-tier">
-                                    <!-- Items will be dragged here -->
-                                </div>
-                            </div>
-                            <div class="tier-row">
-                                <div class="tier-label">B Tier</div>
-                                <div class="tier-items" id="b-tier">
-                                    <!-- Items will be dragged here -->
-                                </div>
-                            </div>
-                            <div class="tier-row">
-                                <div class="tier-label">C Tier</div>
-                                <div class="tier-items" id="c-tier">
-                                    <!-- Items will be dragged here -->
-                                </div>
-                            </div>
-                            <div class="tier-row">
-                                <div class="tier-label">D Tier</div>
-                                <div class="tier-items" id="d-tier">
-                                    <!-- Items will be dragged here -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Items to Drag -->
-                        <div class="mt-10">
-                            <h2 class="text-2xl font-bold mb-5">Items</h2>
-                            <div class="flex gap-3 flex-wrap" id="items-container">
-                                <div class="tier-item" id="item-1" draggable="true">Item 1</div>
-                                <div class="tier-item" id="item-2" draggable="true">Item 2</div>
-                                <div class="tier-item" id="item-3" draggable="true">Item 3</div>
-                                <div class="tier-item" id="item-4" draggable="true">Item 4</div>
-                                <div class="tier-item" id="item-5" draggable="true">Item 5</div>
-                                <div class="tier-item" id="item-6" draggable="true">Item 6</div>
-                                <div class="tier-item" id="item-7" draggable="true">Item 7</div>
-                                <div class="tier-item" id="item-8" draggable="true">Item 8</div>
-                                <div class="tier-item" id="item-9" draggable="true">Item 9</div>
-                                <div class="tier-item" id="item-10" draggable="true">Item 10</div>
-                                <div class="tier-item" id="item-11" draggable="true">Item 11</div>
-                                <div class="tier-item" id="item-12" draggable="true">Item 12</div>
-                                <div class="tier-item" id="item-13" draggable="true">Item 13</div>
-                                <div class="tier-item" id="item-14" draggable="true">Item 14</div>
-                                <div class="tier-item" id="item-15" draggable="true">Item 15</div>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
-
-                    <script>
-                        document.addEventListener('DOMContentLoaded', () => {
-                            const items = document.querySelectorAll('.tier-item');
-                            const rows = document.querySelectorAll('.tier-row');
-                            const itemsContainer = document.getElementById('items-container');
-
-                            let draggedItem = null; // Track the dragged item
-
-                            // Allow dragging items
-                            items.forEach(item => {
-                                item.addEventListener('dragstart', (e) => {
-                                    draggedItem = item;
-                                    setTimeout(() => item.classList.add('hidden'),
-                                        0); // Hide the item while dragging
-                                });
-
-                                item.addEventListener('dragend', () => {
-                                    draggedItem = null;
-                                    items.forEach(item => item.classList.remove('hidden'));
-                                });
-                            });
-
-                            // Allow rows to accept items
-                            rows.forEach(row => {
-                                row.addEventListener('dragover', (e) => {
-                                    e.preventDefault(); // Allow dropping
-                                    row.classList.add('hovered');
-                                });
-
-                                row.addEventListener('dragleave', () => {
-                                    row.classList.remove('hovered');
-                                });
-
-                                row.addEventListener('drop', (e) => {
-                                    e.preventDefault();
-                                    row.classList.remove('hovered');
-
-                                    if (draggedItem) {
-                                        // Insert the item after the tier-label
-                                        const label = row.querySelector('.tier-label');
-                                        row.insertBefore(draggedItem, label.nextSibling);
-                                    }
-                                });
-                            });
-
-                            // Allow items to be dragged back to the items container
-                            itemsContainer.addEventListener('dragover', (e) => {
-                                e.preventDefault(); // Allow dropping in the items container
-                            });
-
-                            itemsContainer.addEventListener('drop', (e) => {
-                                e.preventDefault();
-                                if (draggedItem) {
-                                    itemsContainer.appendChild(draggedItem); // Move the item back to the items container
-                                }
-                            });
-
-                            // This ensures that the items are draggable in both the container and tier rows
-                            itemsContainer.addEventListener('dragenter', (e) => {
-                                if (draggedItem) {
-                                    e.preventDefault(); // Ensure we allow dragging even when the container is empty
-                                }
-                            });
-                        });
-                    </script>
-
                 </section>
+            </article>
+        </div>
+    </main>
 
-                <section>
-                    <div class="text-center mt-4 container">
+    <style>
+        .tier-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-                        <table class="table">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>NIS</th>
-                                <th>Alamat</th>
-                                <th>Number</th>
-                                <th>Gender</th>
-                                <th>Birthdate</th>
-                            </tr>
-                        </table>
-                    </div>
-                </section>
+        .tier-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #a2a0a5;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tier-row.hovered {
+            background-color: rgba(150, 150, 150, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .tier-label {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f7f7f7;
+            display: inline-block;
+            /* Allows the box to adjust to the content */
+        }
+
+        .tier-items {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        .tier-item {
+            padding: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            display: inline-block;
+            /* Allows the box to adjust to the content */
+        }
+
+        .tier-item.hidden {
+            display: none;
+        }
+    </style>
+
 </x-layout>

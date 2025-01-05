@@ -41,11 +41,15 @@ class DatabaseSeeder extends Seeder
 
 
 
-        $this -> call([CategorySeeder::class, UserSeeder::class]);
+        $this->call([CategorySeeder::class, UserSeeder::class]);
         Post::factory(100)->recycle([
             Category::all(),
             User::all()
         ])->create();
-        
+
+        // Call the TierSeeder first
+        $this->call(TierSeeder::class);
+        // Call the ItemSeeder
+        $this->call(ItemSeeder::class);
     }
 }

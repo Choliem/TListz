@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Tier extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'rank'];
-    protected $with = 'post';
+
+    protected $fillable = ['name', 'rank', 'post_id'];
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }
+
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
     }
 }
+
