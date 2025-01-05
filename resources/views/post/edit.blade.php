@@ -177,10 +177,8 @@
                             const tierList = document.getElementById('tier-list');
                             const addTierBtn = document.getElementById('add-tier-btn');
                             const form = document.querySelector('form');
-                            const deletedTiersInput = document.getElementById('deleted-tiers'); // Hidden input field
 
                             let draggedItem = null; // Track the dragged item
-                            let deletedTiers = []; // Track deleted tiers
 
                             // Allow dragging items
                             items.forEach(item => {
@@ -276,6 +274,28 @@
                                         newRow.insertBefore(draggedItem, newLabel.nextSibling);
                                     }
                                 });
+
+                                // Send an AJAX request to save the new tier
+                                fetch('/tiers', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                                .getAttribute('content')
+                                        },
+                                        body: JSON.stringify({
+                                            name: `Tier ${tierCount}`,
+                                            rank: tierCount,
+                                            post_id: '{{ $post->id }}'
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Tier added successfully:', data);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error adding tier:', error);
+                                    });
                             });
 
                             // Client-side validation for tier names
@@ -296,26 +316,40 @@
                                     e.preventDefault(); // Prevent form submission if validation fails
                                     alert('Please fill in all tier names.');
                                 }
-
-                                // Add deleted tiers to the hidden input
-                                deletedTiersInput.value = JSON.stringify(deletedTiers);
                             });
 
-                            // Add delete functionality
+                            // Add delete functionality with immediate save
                             tierList.addEventListener('click', (e) => {
                                 if (e.target.closest('.delete-tier-btn')) {
                                     const tierRow = e.target.closest('.tier-row');
                                     const tierId = tierRow.getAttribute('data-tier-id');
 
-                                    // Add the tier ID to the deleted tiers array
-                                    deletedTiers.push(tierId);
-
-                                    // Remove the tier row from the DOM
-                                    tierRow.remove();
+                                    // Send an AJAX request to delete the tier
+                                    fetch(`/tiers/${tierId}`, {
+                                            method: 'DELETE',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                                    .getAttribute('content')
+                                            }
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('Tier deleted successfully');
+                                                // Remove the tier row from the DOM
+                                                tierRow.remove();
+                                            } else {
+                                                console.error('Error deleting tier:', response.statusText);
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error deleting tier:', error);
+                                        });
                                 }
                             });
                         });
                     </script>
+
 
 
                 </section>

@@ -79,11 +79,11 @@ class PostController extends Controller
         }
 
         // Add deletion of marked tiers
-        if ($request->filled('deleted_tiers')) {
-            $deletedTiers = json_decode($request->input('deleted_tiers'), true);
-            Tier::destroy($deletedTiers);
-            $hasChanges = true; // Mark changes as true since tiers are deleted
-        }
+        // if ($request->filled('deleted_tiers')) {
+        //     $deletedTiers = json_decode($request->input('deleted_tiers'), true);
+        //     Tier::destroy($deletedTiers);
+        //     $hasChanges = true; // Mark changes as true since tiers are deleted
+        // }
 
         if ($hasChanges) {
             $post->save();
@@ -92,9 +92,6 @@ class PostController extends Controller
 
         return redirect()->route('post.edit', $post->slug);
     }
-
-
-
 
     public function delete($slug)
     {

@@ -61,3 +61,4 @@ Route::put('/post/update/{slug}', [PostController::class, 'update'])->name('post
 Route::delete('/post/delete/{slug}', [PostController::class, 'delete'])->name('post.delete');
 
 Route::post('/tiers', [TierController::class, 'store']);
+Route::delete('/tiers/{tier}', [TierController::class, 'destroy']);

@@ -17,4 +17,9 @@ class TierController extends Controller
 
         return response()->json($tier);
     }
+    public function destroy(Tier $tier)
+    {
+        $tier->delete();
+        return response()->json(['success' => 'Tier deleted successfully']);
+    }
 }
