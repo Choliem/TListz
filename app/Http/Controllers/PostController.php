@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Post;
 use App\Models\Tier;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -18,8 +19,13 @@ class PostController extends Controller
         // Eager load tiers and items
         $post = Post::with(['tiers.items'])->where('slug', $slug)->firstOrFail();
 
-        return view('post.show', compact('post'));
+        // Extract tiers from the post
+        $tiers = $post->tiers;
+
+        // Pass both $post and $tiers to the view
+        return view('post.show', compact('post', 'tiers'));
     }
+
 
 
     function add()
@@ -28,14 +34,23 @@ class PostController extends Controller
         return view('post.add', ['title' => 'Add New Post', 'categories' => $categories]);
     }
 
+
     public function edit($slug)
     {
-
+        // Fetch the post and its associated tiers and items
         $post = Post::where('slug', $slug)->firstOrFail();
         $post->load(['tiers.items']);
+
+        // Fetch categories (unchanged)
         $categories = Category::all();
-        return view('post.edit', compact('post', 'categories'), ['title' => 'Edit Post']);
+
+        // Fetch items with null tier_id (unassigned items)
+        $unassignedItems = Item::where('post_id', $post->id)->whereNull('tier_id')->get();
+
+        // Return the view with the post, categories, and unassigned items
+        return view('post.edit', compact('post', 'categories', 'unassignedItems'), ['title' => 'Edit Post']);
     }
+
 
     public function update(Request $request, $slug)
     {

@@ -5,6 +5,8 @@
 
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="pb-4"><a href="/posts/{{ $post['slug'] }}" class="font-medium text-xs text-blue-600 hover:underline">&laquo; Back To My
+                        Post</a></div>
             @if (session('success'))
                 <div id="success-popup"
                     class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -26,20 +28,25 @@
                 </script>
             @endif
 
-
             <form action="{{ route('post.update', $post->slug) }}" method="POST"> @csrf @method('PUT')
+
+                {{-- Title Input --}}
                 <div class="mb-4"> <label for="title"
                         class="block text-sm font-medium text-gray-700">Title:</label>
                     <input type="text" id="title" name="title" value="{{ $post->title }}"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         required>
                 </div>
+
+                {{-- Text Input --}}
                 <div class="mb-4"> <label for="body"
                         class="block text-sm font-medium text-gray-700">Content:</label>
                     <textarea id="body" name="body"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         required>{{ $post->body }}</textarea>
                 </div>
+
+                {{-- Category Input --}}
                 <div class="mb-4"> <label for="category"
                         class="block text-sm font-medium text-gray-700">Category:</label> <select id="category"
                         name="category"
@@ -103,11 +110,10 @@
                             class="ml-4 py-2 px-4 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 sm:gap-3 sm:px-6 sm:text-base">
                             Add Item </button> </h3>
                     <div class="flex gap-3 flex-wrap" id="items-container">
-                        @foreach ($post->tiers->flatMap->items as $item)
-                            @if (is_null($item->tier_id))
-                                <div class="tier-item" id="item-{{ $item->id }}" draggable="true">
-                                    {{ $item->name }} </div>
-                            @endif
+                        @foreach ($unassignedItems as $item)
+                            <div class="tier-item" id="item-{{ $item->id }}" draggable="true">
+                                {{ $item->name }}
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -179,82 +185,113 @@
 
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
-                        const items = document.querySelectorAll('.tier-item');
-                        const rows = document.querySelectorAll('.tier-row');
+                        // DOM Elements
                         const itemsContainer = document.getElementById('items-container');
                         const tierList = document.getElementById('tier-list');
                         const addTierBtn = document.getElementById('add-tier-btn');
-                        const form = document.querySelector('form');
-
+                        const addItemBtn = document.getElementById('add-item-btn');
+                        const addItemPopup = document.getElementById('add-item-popup');
+                        const addItemForm = document.getElementById('add-item-form');
+                        const submitItemBtn = document.getElementById('submit-item-btn');
+                        const cancelItemBtn = document.getElementById('cancel-item-btn');
                         let draggedItem = null; // Track the dragged item
 
-                        // Allow dragging items
-                        items.forEach(item => {
-                            item.addEventListener('dragstart', (e) => {
-                                draggedItem = item;
-                                setTimeout(() => item.classList.add('hidden'),
-                                    0); // Hide the item while dragging
+                        // ===== DRAG AND DROP FUNCTIONALITY =====
+                        function enableDragAndDrop() {
+                            const items = document.querySelectorAll('.tier-item');
+                            const rows = document.querySelectorAll('.tier-row');
+
+                            // Allow dragging items
+                            items.forEach(item => {
+                                item.addEventListener('dragstart', () => {
+                                    draggedItem = item;
+                                    setTimeout(() => item.classList.add('hidden'),
+                                        0); // Hide item while dragging
+                                });
+
+                                item.addEventListener('dragend', () => {
+                                    draggedItem = null;
+                                    items.forEach(item => item.classList.remove('hidden'));
+                                });
                             });
 
-                            item.addEventListener('dragend', () => {
-                                draggedItem = null;
-                                items.forEach(item => item.classList.remove('hidden'));
-                            });
-                        });
+                            // Allow rows to accept items
+                            rows.forEach(row => {
+                                row.addEventListener('dragover', (e) => {
+                                    e.preventDefault();
+                                    row.classList.add('hovered');
+                                });
 
-                        // Allow rows to accept items
-                        rows.forEach(row => {
-                            row.addEventListener('dragover', (e) => {
-                                e.preventDefault(); // Allow dropping
-                                row.classList.add('hovered');
+                                row.addEventListener('dragleave', () => {
+                                    row.classList.remove('hovered');
+                                });
+
+                                row.addEventListener('drop', (e) => {
+                                    e.preventDefault();
+                                    row.classList.remove('hovered');
+
+                                    if (draggedItem) {
+                                        const tierId = row.getAttribute('data-tier-id'); // Get tier ID from row
+                                        row.appendChild(draggedItem); // Move the dragged item to the new tier
+                                        saveItemToTier(draggedItem, tierId);
+                                    }
+                                });
                             });
 
-                            row.addEventListener('dragleave', () => {
-                                row.classList.remove('hovered');
-                            });
-
-                            row.addEventListener('drop', (e) => {
+                            // Allow items to be dragged back to the items container
+                            itemsContainer.addEventListener('dragover', (e) => e.preventDefault());
+                            itemsContainer.addEventListener('drop', (e) => {
                                 e.preventDefault();
-                                row.classList.remove('hovered');
-
                                 if (draggedItem) {
-                                    // Insert the item after the tier-label
-                                    const label = row.querySelector('.tier-label');
-                                    row.insertBefore(draggedItem, label.nextSibling);
+                                    itemsContainer.appendChild(draggedItem); // Move item back to container
+                                    saveItemToTier(draggedItem, null); // Update to 'null' tier (container)
                                 }
                             });
-                        });
+                        }
 
-                        // Allow items to be dragged back to the items container
-                        itemsContainer.addEventListener('dragover', (e) => {
-                            e.preventDefault(); // Allow dropping in the items container
-                        });
+                        // Save item placement to the server (via AJAX)
+                        function saveItemToTier(item, tierId) {
+                            const itemId = item.getAttribute('id').replace('item-', ''); // Extract item ID
+                            console.log('Item ID:', itemId); // Ensure this outputs a valid ID
 
-                        itemsContainer.addEventListener('drop', (e) => {
-                            e.preventDefault();
-                            if (draggedItem) {
-                                itemsContainer.appendChild(draggedItem); // Move the item back to the items container
-                            }
-                        });
+                            fetch(`/items/${itemId}/assign-tier`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                            'content')
+                                    },
+                                    body: JSON.stringify({
+                                        tier_id: tierId
+                                    })
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        console.log(
+                                            `Item ${itemId} successfully assigned to tier ${tierId || 'Items Container'}.`
+                                            );
+                                    } else {
+                                        console.error('Failed to assign item:', response.statusText);
+                                    }
+                                })
+                                .catch(error => console.error('Error saving item placement:', error));
+                        }
 
-                        // Ensure items are draggable in both the container and tier rows
-                        itemsContainer.addEventListener('dragenter', (e) => {
-                            if (draggedItem) {
-                                e.preventDefault(); // Ensure dragging is allowed even when the container is empty
-                            }
-                        });
 
-                        // Add a new tier row
-                        addTierBtn.addEventListener('click', (e) => {
-                            e.preventDefault(); // Prevent form submission
-                            const tierCount = tierList.childElementCount + 1; // Count the existing tiers
+                        // ===== ADD TIER FUNCTIONALITY =====
+                        function addNewTier() {
+                            const tierCount = tierList.childElementCount + 1; // Count existing tiers
                             const newRow = document.createElement('div');
                             newRow.classList.add('tier-row');
+                            newRow.setAttribute('data-tier-id', tierCount); // Assign a unique ID or fetched ID for the tier
 
                             const newLabel = document.createElement('div');
                             newLabel.classList.add('tier-label');
-                            newLabel.innerHTML =
-                                `<input type="text" name="tiers[${tierCount}][name]" value="Tier ${tierCount}" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">`;
+                            newLabel.innerHTML = `
+            <input type="text" name="tiers[${tierCount}][name]"
+            value="Tier ${tierCount}"
+            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        `;
 
                             const newItemsContainer = document.createElement('div');
                             newItemsContainer.classList.add('tier-items');
@@ -264,32 +301,15 @@
                             tierList.appendChild(newRow);
 
                             // Add drag and drop event listeners to the new row
-                            newRow.addEventListener('dragover', (e) => {
-                                e.preventDefault(); // Allow dropping
-                                newRow.classList.add('hovered');
-                            });
+                            enableDragAndDrop();
 
-                            newRow.addEventListener('dragleave', () => {
-                                newRow.classList.remove('hovered');
-                            });
-
-                            newRow.addEventListener('drop', (e) => {
-                                e.preventDefault();
-                                newRow.classList.remove('hovered');
-
-                                if (draggedItem) {
-                                    // Insert the item after the tier-label
-                                    newRow.insertBefore(draggedItem, newLabel.nextSibling);
-                                }
-                            });
-
-                            // Send an AJAX request to save the new tier
+                            // Save the new tier to the server
                             fetch('/tiers', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                            .getAttribute('content')
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                            'content')
                                     },
                                     body: JSON.stringify({
                                         name: `Tier ${tierCount}`,
@@ -300,117 +320,81 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     console.log('Tier added successfully:', data);
+                                    newRow.setAttribute('data-tier-id', data.id); // Update with the tier ID from the server
                                 })
-                                .catch(error => {
-                                    console.error('Error adding tier:', error);
-                                });
-                        });
+                                .catch(error => console.error('Error adding tier:', error));
+                        }
 
-                        // Client-side validation for tier names
-                        form.addEventListener('submit', (e) => {
-                            const tierInputs = document.querySelectorAll('input[name^="tiers"]');
-                            let valid = true;
-
-                            tierInputs.forEach(input => {
-                                if (!input.value.trim()) {
-                                    valid = false;
-                                    input.classList.add('border-red-500'); // Highlight the empty field
-                                } else {
-                                    input.classList.remove('border-red-500');
-                                }
+                        // ===== ITEM POP-UP FORM FUNCTIONALITY =====
+                        function handleAddItemPopup() {
+                            // Show pop-up form
+                            addItemBtn.addEventListener('click', () => {
+                                addItemPopup.classList.remove('hidden');
                             });
 
-                            if (!valid) {
-                                e.preventDefault(); // Prevent form submission if validation fails
-                                alert('Please fill in all tier names.');
-                            }
-                        });
+                            // Hide pop-up form
+                            cancelItemBtn.addEventListener('click', () => {
+                                addItemPopup.classList.add('hidden');
+                            });
 
-                        // Add delete functionality with immediate save
-                        tierList.addEventListener('click', (e) => {
-                            if (e.target.closest('.delete-tier-btn')) {
-                                const tierRow = e.target.closest('.tier-row');
-                                const tierId = tierRow.getAttribute('data-tier-id');
+                            // Submit new item
+                            submitItemBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const formData = new FormData(addItemForm);
+                                const itemData = {
+                                    name: formData.get('name'),
+                                    image: formData.get('image'),
+                                    description: formData.get('description'),
+                                    tier_id: formData.get('tier_id') || null, // Allow null if no tier selected
+                                    post_id: formData.get('post_id') // Ensure post_id is set
+                                };
 
-                                // Send an AJAX request to delete the tier
-                                fetch(`/tiers/${tierId}`, {
-                                        method: 'DELETE',
+                                fetch('/items', {
+                                        method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',
                                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
                                                 .getAttribute('content')
-                                        }
+                                        },
+                                        body: JSON.stringify(itemData)
                                     })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            console.log('Tier deleted successfully');
-                                            // Remove the tier row from the DOM
-                                            tierRow.remove();
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Item added successfully:', data);
+
+                                        // Create new item element
+                                        const newItem = document.createElement('div');
+                                        newItem.classList.add('tier-item');
+                                        newItem.setAttribute('id', `item-${data.id}`);
+                                        newItem.setAttribute('draggable', 'true');
+                                        newItem.textContent = itemData.name;
+
+                                        // Append item to the correct container
+                                        if (!itemData.tier_id) {
+                                            itemsContainer.appendChild(newItem); // Add to container if no tier ID
                                         } else {
-                                            console.error('Error deleting tier:', response.statusText);
+                                            const tierItemsContainer = document.querySelector(
+                                                `#tier-${itemData.tier_id}-items`);
+                                            if (tierItemsContainer) {
+                                                tierItemsContainer.appendChild(newItem);
+                                            }
                                         }
+
+                                        // Reset and hide the form
+                                        addItemForm.reset();
+                                        addItemPopup.classList.add('hidden');
+
+                                        // Re-enable drag and drop functionality
+                                        enableDragAndDrop();
                                     })
-                                    .catch(error => {
-                                        console.error('Error deleting tier:', error);
-                                    });
-                            }
-                        });
+                                    .catch(error => console.error('Error adding item:', error));
+                            });
+                        }
 
-                        // Add new item popup form
-                        const addItemBtn = document.getElementById('add-item-btn');
-                        const addItemPopup = document.getElementById('add-item-popup');
-                        const addItemForm = document.getElementById('add-item-form');
-                        const submitItemBtn = document.getElementById('submit-item-btn');
-                        const cancelItemBtn = document.getElementById('cancel-item-btn');
-
-                        // Show pop-up form when "Add Item" button is pressed
-                        addItemBtn.addEventListener('click', () => {
-                            addItemPopup.classList.remove('hidden');
-                        });
-
-                        // Hide pop-up form when "Cancel" button is pressed
-                        cancelItemBtn.addEventListener('click', () => {
-                            addItemPopup.classList.add('hidden');
-                        });
-
-                        // Handle form submission for adding item
-                        submitItemBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const formData = new FormData(addItemForm);
-                            const itemData = {
-                                name: formData.get('name'),
-                                image: formData.get('image'),
-                                description: formData.get('description'),
-                            };
-
-                            // Send an AJAX request to add the new item
-                            fetch('/items', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                            .getAttribute('content')
-                                    },
-                                    body: JSON.stringify(itemData)
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log('Item added successfully:', data);
-                                    // Add the new item to the items container
-                                    const newItem = document.createElement('div');
-                                    newItem.classList.add('tier-item');
-                                    newItem.setAttribute('id', `item-${data.id}`);
-                                    newItem.setAttribute('draggable', 'true');
-                                    newItem.textContent = itemData.name;
-                                    itemsContainer.appendChild(newItem);
-                                    // Reset and hide the form
-                                    addItemForm.reset();
-                                    addItemPopup.classList.add('hidden');
-                                })
-                                .catch(error => {
-                                    console.error('Error adding item:', error);
-                                });
-                        });
+                        // ===== INITIALIZATION =====
+                        enableDragAndDrop();
+                        addTierBtn.addEventListener('click', addNewTier);
+                        handleAddItemPopup();
                     });
                 </script>
 
@@ -421,29 +405,45 @@
                 </div>
             </form>
 
-            <!-- Add Item Pop-up Form -->
+            <!-- Add Item Pop-up Form Container -->
             <div id="add-item-popup"
-                class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
-                <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto animate__animated animate__fadeInDown">
-                    <h2 class="text-xl font-semibold mb-4">Add Item</h2>
+                class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <!-- Add Item Form -->
                     <form id="add-item-form">
-                        <div class="mb-4"> <label for="item-name"
-                                class="block text-sm font-medium text-gray-700">Name:</label> <input type="text"
-                                id="item-name" name="name"
+                        <div class="mb-4">
+                            <label for="item-name" class="block text-sm font-medium text-gray-700">Name:</label>
+                            <input type="text" id="item-name" name="name"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                required> </div>
-                        <div class="mb-4"> <label for="item-image"
-                                class="block text-sm font-medium text-gray-700">image:</label> <input type="text"
-                                id="item-image" name="image"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="item-image" class="block text-sm font-medium text-gray-700">Image:</label>
+                            <input type="text" id="item-image" name="image"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                required> </div>
-                        <div class="mb-4"> <label for="item-description"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="item-description"
                                 class="block text-sm font-medium text-gray-700">Description:</label>
                             <textarea id="item-description" name="description"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
-                        </div> <button type="button" id="submit-item-btn"
-                            class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add
-                            Item</button> <button type="button" id="cancel-item-btn"
+                        </div>
+                        <div class="mb-4">
+                            <label for="item-tier" class="block text-sm font-medium text-gray-700">Tier:</label>
+                            <select id="item-tier" name="tier_id"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="">None</option>
+                                @foreach ($post->tiers as $tier)
+                                    <option value="{{ $tier->id }}">{{ $tier->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <button type="button" id="submit-item-btn"
+                            class="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Add
+                            Item</button>
+                        <button type="button" id="cancel-item-btn"
                             class="w-full py-3 px-4 mt-2 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Cancel</button>
                     </form>
                 </div>

@@ -12,15 +12,17 @@ return new class extends Migration {
     {
         Schema::create('tiers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained(
-                table: 'posts',
-                indexName: 'tiers_post_id'
-            );
+
+            // Foreign key to posts table with ON DELETE CASCADE
+            $table->foreignId('post_id')
+                ->constrained('posts', 'id')
+                ->onDelete('cascade') // Automatically delete tiers when the related post is deleted
+                ->index('tiers_post_id');
+
             $table->string('name');
             $table->integer('rank');
             $table->timestamps();
         });
-
     }
 
     /**

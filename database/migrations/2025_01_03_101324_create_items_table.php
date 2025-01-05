@@ -12,10 +12,19 @@ return new class extends Migration {
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tier_id')->constrained(
-                table: 'tiers',
-                indexName: 'items_tier_id'
-            );
+
+            // Foreign key to posts table with ON DELETE CASCADE
+            $table->foreignId('post_id')
+                ->constrained('posts', 'id')
+                ->onDelete('cascade') // Automatically delete items when the related post is deleted
+                ->index('items_post_id');
+
+            $table->foreignId('tier_id')
+                ->nullable()
+                ->constrained('tiers', 'id')
+                ->onDelete('set null') // Optional: Set to NULL if the tier is deleted
+                ->index('items_tier_id');
+
             $table->string('name');
             $table->string('image'); // Path or URL to the image
             $table->text('description')->nullable();

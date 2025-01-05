@@ -65,3 +65,6 @@ Route::post('/tiers', [TierController::class, 'store']);
 Route::delete('/tiers/{tier}', [TierController::class, 'destroy']);
 
 Route::post('/items', [ItemController::class, 'store']);
+Route::patch('/items/{item}/update-tier', [ItemController::class, 'updateTier'])->name('items.update-tier');;
+Route::post('/items/{item}/assign-tier', [ItemController::class, 'assignTier'])->name('items.assign-tier');
+
