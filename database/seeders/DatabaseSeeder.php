@@ -47,6 +47,9 @@ class DatabaseSeeder extends Seeder
             User::all()
         ])->create();
 
-        $this->call([TierSeeder::class,]);
+        // Call the TierSeeder first
+        $this->call(TierSeeder::class);
+        // Call the ItemSeeder
+        $this->call(ItemSeeder::class);
     }
 }

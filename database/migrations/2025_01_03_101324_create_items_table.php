@@ -17,7 +17,7 @@ return new class extends Migration {
                 indexName: 'items_tier_id'
             );
             $table->string('name');
-            $table->string('url'); // Path or URL to the image
+            $table->string('image'); // Path or URL to the image
             $table->text('description')->nullable();
             $table->timestamps();
         });

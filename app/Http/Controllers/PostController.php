@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Tier;
 use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -43,11 +43,11 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'body' => 'required|string',
             'category' => 'required|string|max:255',
-            'tiers.*.name' => 'required|string|max:255', // Add validation for tier names
+            'tiers.*.name' => 'required|string|max:255',
         ]);
 
+        // Fetch and update the post
         $post = Post::where('slug', $slug)->firstOrFail();
-
         $hasChanges = false;
 
         if ($post->title !== $request->title) {
@@ -78,13 +78,6 @@ class PostController extends Controller
             }
         }
 
-        // Add deletion of marked tiers
-        // if ($request->filled('deleted_tiers')) {
-        //     $deletedTiers = json_decode($request->input('deleted_tiers'), true);
-        //     Tier::destroy($deletedTiers);
-        //     $hasChanges = true; // Mark changes as true since tiers are deleted
-        // }
-
         if ($hasChanges) {
             $post->save();
             return redirect()->route('post.edit', $post->slug)->with('success', 'Post Updated!');
@@ -92,6 +85,7 @@ class PostController extends Controller
 
         return redirect()->route('post.edit', $post->slug);
     }
+
 
     public function delete($slug)
     {

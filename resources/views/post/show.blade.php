@@ -122,7 +122,7 @@
                         <div id="tier-list" class="tier-list">
                             @foreach ($post->tiers as $tier)
                                 <div class="tier-row">
-                                    <div class="tier-label">{{ $tier->name }} Tier</div>
+                                    <div class="tier-label">{{ $tier->name }}</div>
                                     <div class="tier-items" id="{{ Str::slug($tier->name) }}-tier">
                                         @foreach ($tier->items as $item)
                                             <div class="tier-item" id="item-{{ $item->id }}">{{ $item->name }}
@@ -189,5 +189,5 @@
             display: none;
         }
     </style>
-    
+
 </x-layout>

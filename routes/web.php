@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TierController;
 
@@ -62,3 +63,5 @@ Route::delete('/post/delete/{slug}', [PostController::class, 'delete'])->name('p
 
 Route::post('/tiers', [TierController::class, 'store']);
 Route::delete('/tiers/{tier}', [TierController::class, 'destroy']);
+
+Route::post('/items', [ItemController::class, 'store']);

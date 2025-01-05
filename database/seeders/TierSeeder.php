@@ -10,8 +10,10 @@ class TierSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         $posts = Post::all();
 
