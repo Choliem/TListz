@@ -13,27 +13,23 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-
     public function show($slug)
     {
         // Eager load tiers and items
-        $post = Post::with(['tiers.items'])->where('slug', $slug)->firstOrFail();
+        $post = Post::with(['tiers.items', 'comments'])->where('slug', $slug)->firstOrFail();
 
         // Extract tiers from the post
         $tiers = $post->tiers;
 
         // Pass both $post and $tiers to the view
-        return view('post.show', compact('post', 'tiers'));
+        return view('post.show', compact('post', 'tiers', 'comments'));
     }
 
-
-
-    function add()
+    public function add()
     {
         $categories = Category::all();
         return view('post.add', ['title' => 'Add New Post', 'categories' => $categories]);
     }
-
 
     public function edit($slug)
     {
@@ -50,7 +46,6 @@ class PostController extends Controller
         // Return the view with the post, categories, and unassigned items
         return view('post.edit', compact('post', 'categories', 'unassignedItems'), ['title' => 'Edit Post']);
     }
-
 
     public function update(Request $request, $slug)
     {
@@ -101,7 +96,6 @@ class PostController extends Controller
         return redirect()->route('post.edit', $post->slug);
     }
 
-
     public function delete($slug)
     {
         $post = Post::where('slug', $slug)->firstOrFail();
@@ -111,12 +105,14 @@ class PostController extends Controller
         return redirect()->route('home')->with('success', '"' . $postTitle . '" has been deleted successfully!');
     }
 
-
-
     public function submit(Request $request)
     {
         // Validasi input
-        $request->validate(['title' => 'required|string|max:255', 'body' => 'required|string', 'category' => 'required|string|max:255',]);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'category' => 'required|string|max:255',
+        ]);
 
         // Cari atau buat kategori baru
         $category = Category::firstOrCreate(['name' => $request->category]);
@@ -131,4 +127,5 @@ class PostController extends Controller
         $post->save();
         return redirect()->route('post.add')->with('success', 'Post Added!');
     }
+
 }

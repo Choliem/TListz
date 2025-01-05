@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TierController;
+use App\Http\Controllers\CommentController;
 
 
 
@@ -68,3 +69,6 @@ Route::post('/items', [ItemController::class, 'store']);
 Route::patch('/items/{item}/update-tier', [ItemController::class, 'updateTier'])->name('items.update-tier');;
 Route::post('/items/{item}/assign-tier', [ItemController::class, 'assignTier'])->name('items.assign-tier');
 
+Route::post('/posts/{post:slug}/like', [PostController::class, 'like'])->name('post.like');
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
