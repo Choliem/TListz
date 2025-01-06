@@ -13,7 +13,7 @@
                     {{-- Tombol Edit Post --}}
                     <div class="px-4 mx-auto max-w-screen-xl lg:px-6">
                         @auth
-                            @if (auth()->user()->name === $post->author->name)
+                            @if (auth()->user()->is_admin || auth()->user()->name === $post->author->name)
                                 <div class="flex justify-center mb-4">
                                     <a href="{{ route('post.edit', $post->slug) }}"
                                         class="flex items-center gap-2 py-2 px-4 text-sm font-medium text-white bg-gradient-to-r from-yellow-500 to-yellow-700 hover:from-yellow-600 hover:to-yellow-800 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-800 sm:gap-3 sm:px-6 sm:text-base">
@@ -92,7 +92,7 @@
                     <address class="flex items-center my-6 not-italic">
                         <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                             <img class="mr-4 w-16 h-16 rounded-full"
-                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                src="https://cdn.discordapp.com/attachments/1272806920884981812/1319073919843438602/deafultprofile.jpg?ex=677c5dd1&is=677b0c51&hm=77115133b8fd7737291bde249fba1611f49fb7344787168439a41d16658f99fa&"
                                 alt="{{ $post->author->name }}">
                             <div>
                                 <a href="/posts?author={{ $post->author->username }}" rel="author"
@@ -220,7 +220,8 @@
                                         class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                                         <img class="mr-2 w-6 h-6 rounded-full"
                                             src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                            alt="Michael Gough">Michael Gough</p>
+                                            alt="Michael Gough">Michael Gough
+                                    </p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                             datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time></p>
                                 </div>
@@ -279,7 +280,8 @@
                                         class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                                         <img class="mr-2 w-6 h-6 rounded-full"
                                             src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                            alt="Jese Leos">Jese Leos</p>
+                                            alt="Jese Leos">Jese Leos
+                                    </p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                             datetime="2022-02-12" title="February 12th, 2022">Feb. 12, 2022</time></p>
                                 </div>
@@ -335,7 +337,8 @@
                                         class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                                         <img class="mr-2 w-6 h-6 rounded-full"
                                             src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                            alt="Bonnie Green">Bonnie Green</p>
+                                            alt="Bonnie Green">Bonnie Green
+                                    </p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                             datetime="2022-03-12" title="March 12th, 2022">Mar. 12, 2022</time></p>
                                 </div>
@@ -392,7 +395,8 @@
                                         class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                                         <img class="mr-2 w-6 h-6 rounded-full"
                                             src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
-                                            alt="Helene Engels">Helene Engels</p>
+                                            alt="Helene Engels">Helene Engels
+                                    </p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                             datetime="2022-06-23" title="June 23rd, 2022">Jun. 23, 2022</time></p>
                                 </div>
