@@ -23,9 +23,10 @@ return new class extends Migration {
             );
             $table->string('slug')->unique();
             $table->text('body');
+            $table->unsignedInteger('likes')->default(0); // Add this line
+            $table->unsignedInteger('comments')->default(0); // Add this line
             $table->timestamps();
         });
-
     }
 
     /**

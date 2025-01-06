@@ -27,7 +27,7 @@ class ItemFactory extends Factory
             'name' => $this->faker->word,
             'image' => $this->faker->imageUrl(),
             'description' => $this->faker->sentence,
-            'post_id' => Post::factory(), // Creates a related post
+            'post_id' => Post::inRandomOrder()->first()->id,
             'tier_id' => $this->faker->boolean ? Tier::factory() : null, // Allow nullable tier_id
         ];
     }
