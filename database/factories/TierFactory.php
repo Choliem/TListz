@@ -16,7 +16,7 @@ class TierFactory extends Factory
     public function definition(): array
     {
         return [
-            'post_id' => Post::factory(), // Creates a related post
+            'post_id' => Post::inRandomOrder()->first()->id,
             'name' => $this->faker->word(),
             'rank' => $this->faker->numberBetween(1, 5),
         ];
