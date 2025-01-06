@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Item;
+use App\Models\Post;
+use Illuminate\Database\Seeder;
 
 class ItemSeeder extends Seeder
 {
@@ -14,7 +15,12 @@ class ItemSeeder extends Seeder
      */
     public function run()
     {
-        // Create 10 items using the factory
-        Item::factory()->count(10)->create();
+        $posts = Post::all();
+
+        foreach ($posts as $post) {
+            Item::factory()->count(10)->create([
+                'post_id' => $post->id,
+            ]);
+        }
     }
 }
