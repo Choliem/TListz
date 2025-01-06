@@ -149,7 +149,9 @@
                                     <div class="tier-label">{{ $tier->name }}</div>
                                     <div class="tier-items" id="{{ Str::slug($tier->name) }}-tier">
                                         @foreach ($tier->items as $item)
-                                            <div class="tier-item" id="item-{{ $item->id }}">{{ $item->name }}
+                                            <div class="tier-item" id="item-{{ $item->id }}">
+                                                <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
+                                                    class="tier-item-image" />
                                             </div>
                                         @endforeach
                                     </div>
@@ -157,38 +159,6 @@
                             @endforeach
                         </div>
                     </div>
-
-                    {{-- Discussion Section --}}
-                    {{-- <div class="mt-12">
-                        <h2 class="text-2xl font-semibold mb-6">Discussion</h2>
-                        <div id="comments-section" class="space-y-4">
-                            @foreach ($comments as $comment)
-                                <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                                    <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        <strong>{{ $comment->user->name }}</strong> said:
-                                    </p>
-                                    <p class="text-gray-900 dark:text-white">{{ $comment->content }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        @auth
-                            <form action="{{ route('comment.add', $post->id) }}" method="POST" class="mt-6">
-                                @csrf
-                                <textarea name="content" rows="4" class="w-full p-3 border rounded-lg" placeholder="Write your comment here..."
-                                    required></textarea>
-                                <button type="submit"
-                                    class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
-                                    Submit Comment
-                                </button>
-                            </form>
-                        @else
-                            <p class="mt-6 text-sm text-gray-600 dark:text-gray-400">
-                                <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Log in</a> to leave
-                                a comment.
-                            </p>
-                        @endauth
-                    </div> --}}
 
                     <script>
                         // JavaScript functionality for expanding or animating comments (optional)
@@ -499,6 +469,16 @@
 
         .tier-item.hidden {
             display: none;
+        }
+
+        .tier-item-image {
+            max-width: 100%;
+            max-height: 100px;
+            /* Adjust height based on your needs */
+            border-radius: 5px;
+            /* Optional: Rounded corners */
+            object-fit: cover;
+            /* Ensures the image fits well within the space */
         }
     </style>
 </x-layout>
