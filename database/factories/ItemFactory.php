@@ -24,12 +24,12 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            // Generate meaningful item names like "Golden Sword", "Health Potion", etc.
+            'name' => ucfirst($this->faker->randomElement(['Golden', 'Silver', 'Mystic', 'Ancient', 'Healing']) . ' ' . $this->faker->randomElement(['Sword', 'Potion', 'Amulet', 'Ring', 'Shield'])),
             'image' => $this->faker->imageUrl(),
             'description' => $this->faker->sentence,
             'post_id' => Post::inRandomOrder()->first()->id,
-            'tier_id' => $this->faker->boolean ? Tier::factory() : null,
+            'tier_id' => null,
         ];
     }
 }
-

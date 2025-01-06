@@ -17,7 +17,7 @@ class TierFactory extends Factory
     {
         return [
             'post_id' => Post::inRandomOrder()->first()->id,
-            'name' => $this->faker->word(),
+            'name' => ucfirst($this->faker->randomElement(['Basic', 'Standard', 'Premium', 'Elite', 'Ultimate'])),
             'rank' => $this->faker->numberBetween(1, 5),
         ];
     }
