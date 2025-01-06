@@ -18,7 +18,7 @@ class TierSeeder extends Seeder
         $posts = Post::all();
 
         foreach ($posts as $post) {
-            Tier::factory()->count(2)->create([
+            Tier::factory()->count(3)->create([
                 'post_id' => $post->id,
             ]);
         }
