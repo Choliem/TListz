@@ -72,3 +72,11 @@ Route::post('/items/{item}/assign-tier', [ItemController::class, 'assignTier'])-
 Route::post('/posts/{post:slug}/like', [PostController::class, 'like'])->name('post.like');
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('/best-categories', function () {
+    $categories = Category::withCount('posts')->orderBy('posts_count', 'desc')->get();
+    return view('posts', [
+        'title' => 'Best Categories',
+        'categories' => $categories,
+    ]);
+})->name('best-categories');

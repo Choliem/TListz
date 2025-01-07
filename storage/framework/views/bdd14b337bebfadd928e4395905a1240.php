@@ -67,6 +67,20 @@
         </div>
     </div>
 
+    <?php if(isset($categories)): ?>
+        <h2 class="text-2xl font-bold my-6">Top Categories</h2>
+        <ul class="space-y-4">
+            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li>
+                    <a href="/categories/<?php echo e($category->slug); ?>"
+                       class="text-lg font-medium text-indigo-600 hover:underline">
+                        <?php echo e($category->name); ?> (<?php echo e($category->posts_count); ?> Posts)
+                    </a>
+                </li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </ul>
+    <?php endif; ?>
+
     <?php echo e($posts->links()); ?>
 
     <div class="my-4 py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
@@ -123,7 +137,6 @@
             <?php endif; ?>
         </div>
     </div>
-
 
     <?php echo e($posts->links()); ?>
 

@@ -6,8 +6,10 @@
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="bg-white p-6 rounded-lg shadow-lg">
             @if (session('success'))
-                <div id="success-popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto animate__animated animate__fadeInDown">
+                <div id="success-popup"
+                    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto animate__animated animate__fadeInDown">
                         <div class="text-center text-green-700 text-xl font-semibold mb-4">
                             {{ session('success') }}
                         </div>
@@ -53,6 +55,11 @@
                     <input type="text" id="new_category" name="new_category"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 </div> --}}
+
+                {{-- Tier List --}}
+
+
+
                 <button type="submit"
                     class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Add Post
