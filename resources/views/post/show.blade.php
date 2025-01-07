@@ -464,7 +464,6 @@
             background-color: #e5e7eb;
             border-radius: 5px;
             display: inline-block;
-            /* Allows the box to adjust to the content */
         }
 
         .tier-item.hidden {
@@ -474,11 +473,8 @@
         .tier-item-image {
             max-width: 100%;
             max-height: 100px;
-            /* Adjust height based on your needs */
             border-radius: 5px;
-            /* Optional: Rounded corners */
             object-fit: cover;
-            /* Ensures the image fits well within the space */
         }
     </style>
 </x-layout>
