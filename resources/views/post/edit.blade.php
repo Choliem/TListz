@@ -83,7 +83,9 @@
                                 <div class="tier-items" id="{{ Str::slug($tier->name) }}-tier">
                                     @foreach ($tier->items as $item)
                                         <div class="tier-item" id="item-{{ $item->id }}" draggable="true">
-                                            {{ $item->name }} </div>
+                                            <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
+                                                class="tier-item-image" />
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -111,7 +113,8 @@
                         <div class="flex gap-3 flex-wrap" id="items-container">
                             @foreach ($unassignedItems as $item)
                                 <div class="tier-item" id="item-{{ $item->id }}" draggable="true">
-                                    {{ $item->name }}
+                                    <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
+                                        class="tier-item-image" />
                                 </div>
                             @endforeach
                         </div>
@@ -147,7 +150,6 @@
                             border-radius: 5px;
                             background-color: #f7f7f7;
                             display: inline-block;
-                            /* Allows the box to adjust to the content */
                         }
 
                         .tier-items {
@@ -163,7 +165,6 @@
                             border-radius: 5px;
                             cursor: grab;
                             display: inline-block;
-                            /* Allows the box to adjust to the content */
                         }
 
                         .tier-item:active {
@@ -179,6 +180,13 @@
                             padding: 15px;
                             border-radius: 10px;
                             border: 1px dashed #000000;
+                        }
+
+                        .tier-item-image {
+                            max-width: 100%;
+                            max-height: 100px;
+                            border-radius: 5px;
+                            object-fit: cover;
                         }
                     </style>
 
