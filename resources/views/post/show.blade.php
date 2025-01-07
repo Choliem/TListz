@@ -161,10 +161,17 @@
                     </div>
 
                     <script>
-                        // JavaScript functionality for expanding or animating comments (optional)
-                        // Add here if needed
+                        document.getElementById('like-btn').addEventListener('click', function() {
+                            const heartOutline = document.getElementById('heart-outline');
+                            const heartFilled = document.getElementById('heart-filled');
+
+                            heartOutline.classList.toggle('hidden');
+                            heartFilled.classList.toggle('hidden');
+                        });
                     </script>
                 </section>
+
+                {{-- Comment Section --}}
 
 
                 <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
@@ -452,7 +459,6 @@
             border-radius: 5px;
             background-color: #f7f7f7;
             display: inline-block;
-            /* Allows the box to adjust to the content */
         }
 
         .tier-items {
