@@ -19,12 +19,14 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create('en_US');
+
         return [
-            'title' => fake()->sentence(),
+            'title' => $faker->sentence(),
             'author_id' => User::factory(),
             'category_id' => Category::factory(),
             'slug' => Str::slug(fake()->sentence()),
-            'body' => fake()->text(),
+            'body' => $faker->paragraphs(3, true),
         ];
     }
 }

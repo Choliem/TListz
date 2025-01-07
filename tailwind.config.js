@@ -52,11 +52,35 @@ export default {
     },
     plugins: [require("flowbite/plugin"), require("flowbite-typography")],
     safelist: [
-        "bg-red-100",
-        "bg-green-100",
-        "bg-blue-100",
-        "bg-yellow-100",
-        "bg-purple-100",
-        "bg-pink-100",
+        "bg-purple-100", // Game
+        "bg-green-100", // Sport
+        "bg-red-100", // Adventure
+        "bg-blue-100", // Web Design
+        "bg-yellow-100", // UI UX
+        "bg-pink-100", // Web Programming
+        "bg-orange-100", // Photography
+        "bg-cyan-100", // Music
+        "bg-lime-100", // Movies
+        "bg-teal-100", // Travel
+        "bg-brown-100", // Food
+        "bg-gold-100", // Fashion
+        "bg-indigo-100", // Education
+        "bg-silver-100", // Technology
+        "bg-violet-100", // Fitness
+        "bg-magenta-100", // Health
+        "bg-charcoal-100", // Finance
+        "bg-beige-100", // Business
+        "bg-forestgreen-100", // Nature
+        "bg-navy-100", // DIY
+        "bg-coral-100", // Art
+        "bg-skyblue-100", // Science
+        "bg-maroon-100", // History
+        "bg-peach-100", // Lifestyle
+        "bg-crimson-100", // Gaming
+        "bg-plum-100", // Books
+        "bg-darkgreen-100", // Cars
+        "bg-orchid-100", // Pets
+        "bg-steelblue-100", // Parenting
+        "bg-salmon-100", // Culture
     ],
 };
