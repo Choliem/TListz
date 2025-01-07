@@ -11,16 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Schema::create('comments', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('user_id')->constrained(
+        //         table: 'users',
+        //         indexName: 'comments_user_id'
+        //     )->onDelete('cascade');
+        //     $table->foreignId('post_id')
+        //         ->constrained('posts', 'id')
+        //         ->onDelete('cascade') // Automatically delete likes when the related post is deleted
+        //         ->index('comments_post_id');
+        //     $table->text('body');
+        //     $table->timestamps();
+        // });
+
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained(
-                table: 'users',
-                indexName: 'comments_user_id'
-            )->onDelete('cascade');
-            $table->foreignId('post_id')
-                ->constrained('posts', 'id')
-                ->onDelete('cascade') // Automatically delete likes when the related post is deleted
-                ->index('comments_post_id');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('body');
             $table->timestamps();
         });

@@ -57,6 +57,20 @@
         </div>
     </div>
 
+    @if(isset($categories))
+        <h2 class="text-2xl font-bold my-6">Top Categories</h2>
+        <ul class="space-y-4">
+            @foreach ($categories as $category)
+                <li>
+                    <a href="/categories/{{ $category->slug }}"
+                       class="text-lg font-medium text-indigo-600 hover:underline">
+                        {{ $category->name }} ({{ $category->posts_count }} Posts)
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+
     {{ $posts->links() }}
     <div class="my-4 py-4 px-4 mx-auto max-w-screen-xl lg:py-4 lg:px-0">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -109,7 +123,6 @@
             @endforelse
         </div>
     </div>
-
 
     {{ $posts->links() }}
     {{-- </section> --}}

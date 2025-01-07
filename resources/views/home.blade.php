@@ -83,20 +83,23 @@
                 <!-- Feature 3 -->
                 <div
                     class="bg-white text-indigo-800 rounded-lg shadow-lg p-6 text-center transition-transform hover:scale-105 animate__animated animate__fadeInUp">
-                    <svg class="w-16 h-16 mx-auto mb-4 text-yellow-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M6 5a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L15.249 6H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2v-5a3 3 0 0 0-3-3h-3.22l-1.14-1.682A3 3 0 0 0 9.157 6H6V5Z"
-                            clip-rule="evenodd" />
-                        <path fill-rule="evenodd"
-                            d="M3 9a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L12.249 10H3V9Zm0 3v7a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7H3Z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    <a href="{{ route('best-categories') }}">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-yellow-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M6 5a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L15.249 6H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2v-5a3 3 0 0 0-3-3h-3.22l-1.14-1.682A3 3 0 0 0 9.157 6H6V5Z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M3 9a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L12.249 10H3V9Zm0 3v7a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7H3Z"
+                                clip-rule="evenodd" />
+                        </svg>
 
-                    <h3 class="text-xl font-semibold mb-2">Best Categories</h3>
-                    <p>Browse the best Category with the most Tier List posts.</p>
+                        <h3 class="text-xl font-semibold mb-2">Best Categories</h3>
+                        <p>Browse the best Category with the most Tier List posts.</p>
+                    </a>
                 </div>
+
             </div>
         </div>
     </div>

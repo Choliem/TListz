@@ -13,16 +13,27 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    // public function show($slug)
+    // {
+
+    //     $post = Post::with(['tiers.items', 'comments'])->where('slug', $slug)->firstOrFail();
+
+    //     $tiers = $post->tiers;
+
+    //     return view('post.show', compact('post', 'tiers', 'comments'));
+    // }
+
+
     public function show($slug)
     {
-        // Eager load tiers and items
-        $post = Post::with(['tiers.items', 'comments'])->where('slug', $slug)->firstOrFail();
+        // Ensure the likes, comments relationships, and related data are loaded
+        $post = Post::with(['likes', 'comments.user', 'tiers.items'])->findOrFail($slug);
 
         // Extract tiers from the post
         $tiers = $post->tiers;
 
-        // Pass both $post and $tiers to the view
-        return view('post.show', compact('post', 'tiers', 'comments'));
+        // Pass $post and $tiers to the view
+        return view('post.show', compact('post', 'tiers'));
     }
 
     public function add()
